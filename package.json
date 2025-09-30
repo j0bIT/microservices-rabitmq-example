@@ -1,0 +1,14 @@
+{
+  "name": "clothing-shop-rabbitmq",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "order": "node services/order/index.js",
+    "inventory": "node services/inventory/index.js",
+    "notification": "node services/notification/index.js",
+    "analytics": "node services/analytics/index.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.3"
+  }
+}

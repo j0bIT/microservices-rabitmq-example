@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  inventory:
+    build: .
+    environment:
+      - SERVICE_NAME=inventory
+      - RABBITMQ_URL=amqp://rabbitmq
+    command: node services/inventory/index.js
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+
+  notification:
+    build: .
+    environment:
+      - SERVICE_NAME=notification
+      - RABBITMQ_URL=amqp://rabbitmq
+    command: node services/notification/index.js
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+
+  analytics:
+    build: .
+    environment:
+      - SERVICE_NAME=analytics
+      - RABBITMQ_URL=amqp://rabbitmq
+    command: node services/analytics/index.js
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
