@@ -1,5 +1,7 @@
 # Clothing Shop - RabbitMQ Example
 
+![RabbitMQ](image.png)
+
 ## Start
 
 ```bash
